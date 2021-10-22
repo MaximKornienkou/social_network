@@ -2,8 +2,9 @@ import React, {ChangeEvent} from "react";
 import styles from './Dialogs.module.css';
 import Message from "./Message/Message";
 import DialogItem from "./DialogItem/DialogItem";
-import {addNewMessageTextCreator, DialogsPageType, DispatchType, sendMessageCreator} from "../../Redux/state";
+import {DialogsPageType, DispatchType} from "../../Redux/store";
 import {Button, TextField} from "@material-ui/core";
+import {addNewMessageTextCreator, sendMessageCreator} from "../../Redux/dialogs-reducer";
 
 type DialogsPropsType = {
     id: string;

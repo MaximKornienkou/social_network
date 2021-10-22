@@ -1,4 +1,11 @@
-import { v1 } from "uuid"
+import {v1} from "uuid"
+import {ActionTypesProfileReducer, AddPostActionType, NewPostTextActionType, profileReducer} from "./profile-reducer";
+import {
+    ActionTypesDialogsReducer,
+    AddNewMessageTextType,
+    dialogsReducer,
+    SendMessageActionType
+} from "./dialogs-reducer";
 
 export type PostsType = {
     id: string;
@@ -26,13 +33,13 @@ export type DialogsPageType = {
 export type RootStateType = {
     profilePage: ProfilePageType;
     dialogsPage: DialogsPageType;
-
+    sidebar: string
 }
 export type DispatchType = (action:
                                 AddPostActionType |
                                 NewPostTextActionType |
-                                AddNewMessageTextCreatorType |
-                                SendMessageCreatorType) => void;
+                                AddNewMessageTextType |
+                                SendMessageActionType) => void;
 export type StoreType = {
     _state: RootStateType;
     _rerenderEntireTree: () => void;
@@ -40,20 +47,7 @@ export type StoreType = {
     getState: () => RootStateType;
     dispatch: DispatchType;
 }
-export type AddPostActionType = {
-    type: "ADD-POST";
-}
-export type AddNewMessageTextCreatorType = {
-    type: "NEW-MESSAGE-TEXT";
-    messageText: string;
-}
-export type SendMessageCreatorType = {
-    type: "SEND-MESSAGE";
-}
-export type NewPostTextActionType = {
-    type: "NEW-POST-TEXT";
-    value: string;
-}
+
 
 const store: StoreType = {
     _state: {
@@ -106,7 +100,8 @@ const store: StoreType = {
                 {id: v1(), message: "My name is Valera."},
             ],
             newMessageText: ""
-        }
+        },
+        sidebar: "",
     },
     _rerenderEntireTree() {
     },
@@ -117,65 +112,12 @@ const store: StoreType = {
         return this._state
     },
     dispatch(action) {
-        if (action.type === "ADD-POST") {
-            const newPost = {
-                id: v1(), message: this._state.profilePage.newPostText, likesCount: 14
-            };
-            this._state.profilePage.posts.push(newPost);
-            this._state.profilePage.newPostText = "";
-            this._rerenderEntireTree();
-        } else if (action.type === "NEW-POST-TEXT") {
-            this._state.profilePage.newPostText = action.value;
-            this._rerenderEntireTree();
-        } else if (action.type === "SEND-MESSAGE") {
-            this._state.dialogsPage.messageData.push({id: v1(), message: this._state.dialogsPage.newMessageText});
-            this._state.dialogsPage.newMessageText = "";
-            this._rerenderEntireTree();
-        } else if (action.type === "NEW-MESSAGE-TEXT") {
-            this._state.dialogsPage.newMessageText = action.messageText;
-            this._rerenderEntireTree();
-        }
-    }
-}
 
-export const addPostActionCreator = (): AddPostActionType => {
-    return {
-        type: "ADD-POST"
-    }
-}
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
 
-export const addNewMessageTextCreator = (messageText: string): AddNewMessageTextCreatorType => {
-    return {
-        type: "NEW-MESSAGE-TEXT",
-        messageText: messageText
-    }
-}
-export const sendMessageCreator = (): SendMessageCreatorType => {
-    return {
-        type: "SEND-MESSAGE",
-    }
-}
-
-
-export const newPostActionCreator = (value: string): NewPostTextActionType => {
-    return {
-        type: "NEW-POST-TEXT",
-        value: value
+        this._rerenderEntireTree();
     }
 }
 
 export default store;
-
-//____________________________________________________
-// addNewPost(value: string) {
-//     const newPost = {
-//         id: 3, message: value, likesCount: 14
-//     };
-//     this._state.profilePage.posts.push(newPost);
-//     this._state.profilePage.newPostText = "";
-//     this._rerenderEntireTree();
-// },
-// newPostText(value: string) {
-//     this._state.profilePage.newPostText = value;
-//     this._rerenderEntireTree();
-// },
