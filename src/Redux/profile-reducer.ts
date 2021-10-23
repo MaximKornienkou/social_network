@@ -1,30 +1,38 @@
 import {v1} from "uuid";
-import {ProfilePageType} from "./store";
-import {AddNewMessageTextType, SendMessageActionType} from "./dialogs-reducer";
+
+export type PostsType = {
+    id: string;
+    message: string;
+    likesCount: number;
+}
+
+export type ProfilePageType = {
+    posts: Array<PostsType>;
+    newPostText: string;
+}
 
 export type ActionTypesProfileReducer =
-    AddPostActionType |
-    NewPostTextActionType |
-    AddNewMessageTextType |
-    SendMessageActionType;
+    ReturnType<typeof addPostActionCreator> |
+    ReturnType<typeof newPostActionCreator>;
 
-export type AddPostActionType = {
-    type: "ADD-POST";
-}
-export type NewPostTextActionType = {
-    type: "NEW-POST-TEXT";
-    value: string;
+const initialState = {
+    posts: [{id: v1(), message: "Hi, how are you?", likesCount: 12},
+        {id: v1(), message: "My first post", likesCount: 9},
+    ],
+    newPostText: ""
 }
 
-export const profileReducer = (state: ProfilePageType, action: ActionTypesProfileReducer): ProfilePageType => {
+export const profileReducer = (state = initialState,
+                               action: ActionTypesProfileReducer): ProfilePageType => {
     switch (action.type) {
         case "ADD-POST":
             const newPost = {
                 id: v1(), message: state.newPostText, likesCount: 14
             };
-            state.posts.push(newPost);
-            state.newPostText = "";
-            return state;
+            const newState = {...state};
+            newState.posts.push(newPost);
+            newState.newPostText = "";
+            return newState;
         case "NEW-POST-TEXT":
             return {...state, newPostText: action.value};
         default:
@@ -32,14 +40,14 @@ export const profileReducer = (state: ProfilePageType, action: ActionTypesProfil
     }
 }
 
-export const addPostActionCreator = (): AddPostActionType => {
+export const addPostActionCreator = () => {
     return {
         type: "ADD-POST"
-    }
+    } as const
 }
-export const newPostActionCreator = (value: string): NewPostTextActionType => {
+export const newPostActionCreator = (value: string) => {
     return {
         type: "NEW-POST-TEXT",
-        value: value
-    }
+        value
+    } as const
 }

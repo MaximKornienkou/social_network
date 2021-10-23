@@ -1,11 +1,6 @@
 import {v1} from "uuid"
-import {ActionTypesProfileReducer, AddPostActionType, NewPostTextActionType, profileReducer} from "./profile-reducer";
-import {
-    ActionTypesDialogsReducer,
-    AddNewMessageTextType,
-    dialogsReducer,
-    SendMessageActionType
-} from "./dialogs-reducer";
+import {profileReducer} from "./profile-reducer";
+import {    dialogsReducer} from "./dialogs-reducer";
 
 export type PostsType = {
     id: string;
@@ -36,10 +31,7 @@ export type RootStateType = {
     sidebar: string
 }
 export type DispatchType = (action:
-                                AddPostActionType |
-                                NewPostTextActionType |
-                                AddNewMessageTextType |
-                                SendMessageActionType) => void;
+                                any) => void;
 export type StoreType = {
     _state: RootStateType;
     _rerenderEntireTree: () => void;
@@ -90,7 +82,6 @@ const store: StoreType = {
                     avatar: "https://i.pinimg.com/236x/73/b0/c0/73b0c08a5d1578cb976a00d8665ffd77--all-blacks-rugby-wutang.jpg"
                 },
             ],
-
             messageData: [
                 {id: v1(), message: "Hi"},
                 {id: v1(), message: "How are you?"},
