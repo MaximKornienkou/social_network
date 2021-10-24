@@ -13,6 +13,7 @@ import {AppRootStateType} from "./Redux/redux-store";
 import {useSelector} from "react-redux";
 import {DialogsPageType} from "./Redux/dialogs-reducer";
 import {ProfilePageType} from "./Redux/profile-reducer";
+import {Users} from "./components/Users/Users";
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
                 <Route path="/profile" render={() => <Profile title={"title"}
                                                               state={profileState}
                                                               />}/>
-                <Route path="/users" render={() => <div>users</div>}/>
+                <Route path="/users" render={() => <Users />}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>

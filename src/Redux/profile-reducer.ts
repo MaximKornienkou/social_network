@@ -15,7 +15,7 @@ export type ActionTypesProfileReducer =
     ReturnType<typeof addPostActionCreator> |
     ReturnType<typeof newPostActionCreator>;
 
-const initialState = {
+const initialState: ProfilePageType = {
     posts: [{id: v1(), message: "Hi, how are you?", likesCount: 12},
         {id: v1(), message: "My first post", likesCount: 9},
     ],
