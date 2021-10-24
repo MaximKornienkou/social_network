@@ -30,6 +30,7 @@ function App() {
                 <Route path="/profile" render={() => <Profile title={"title"}
                                                               state={profileState}
                                                               />}/>
+                <Route path="/users" render={() => <div>users</div>}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>
