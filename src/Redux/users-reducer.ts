@@ -1,11 +1,10 @@
-import {v1} from "uuid";
-
 export type UsersType = {
     users: Array<UserType>,
 }
 type UserType = {
     id: string,
-    fullName: string,
+    avatar: string,
+    name: string,
     status: string,
     follow: boolean,
     location: LocationType,
@@ -21,38 +20,7 @@ export type ActionsTypes =
     ReturnType<typeof setUsersAC>
 
 const initialState: UsersType = {
-    users: [
-        {
-            id: v1(),
-            fullName: "Maxim",
-            status: "I am learning JS",
-            follow: true,
-            location: {
-                country: "Ukraine",
-                city: "Pokrovsk",
-            },
-        },
-        {
-            id: v1(),
-            fullName: "Den",
-            status: "I am working",
-            follow: false,
-            location: {
-                country: "Ukraine",
-                city: "Kharkiv",
-            },
-        },
-        {
-            id: v1(),
-            fullName: "Alexandra",
-            status: "I am learning HTML",
-            follow: true,
-            location: {
-                country: "Ukraine",
-                city: "Pokrovsk",
-            },
-        },
-    ],
+    users: [],
 }
 
 export const usersReducer = (state = initialState, action: ActionsTypes): UsersType => {
@@ -61,14 +29,14 @@ export const usersReducer = (state = initialState, action: ActionsTypes): UsersT
             return {
                 ...state, users: state.users.map((user) =>
                     user.id === action.userId ? {...user, follow: true} : user)
-            };
+            }
         case "UNFOLLOW":
             return {
                 ...state, users: state.users.map((user) =>
                     user.id === action.userId ? {...user, follow: false} : user)
             };
         case "SET-USERS":
-            return {...state, users:[...state.users, ...action.users]}
+            return {...state, users: [...state.users, ...action.users]}
         default:
             return state;
     }
