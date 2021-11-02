@@ -1,5 +1,9 @@
 export type UsersType = {
     users: Array<UserType>,
+    pageSize: number,
+    totalUsersCount: number,
+    currentPage: number,
+
 }
 type UserType = {
     id: string,
@@ -21,6 +25,9 @@ export type ActionsTypes =
 
 const initialState: UsersType = {
     users: [],
+    pageSize: 5,
+    totalUsersCount: 50,
+    currentPage: 1,
 }
 
 export const usersReducer = (state = initialState, action: ActionsTypes): UsersType => {

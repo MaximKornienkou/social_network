@@ -12,11 +12,11 @@ export function Users() {
 
     if (usersState.users.length === 0) {
 
-        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${usersState.currentPage}&count=${usersState.pageSize}`)
             .then((response: any) => {
-                dispatch(setUsersAC(response.data.items))
-            }
-        )
+                    dispatch(setUsersAC(response.data.items))
+                }
+            )
 
         // dispatch(setUsersAC([
         //     {
@@ -59,14 +59,29 @@ export function Users() {
         dispatch(followAC(userId))
     }
 
+    const pagesCount = Math.ceil(usersState.totalUsersCount / usersState.pageSize);
+
+    const usersPagesCount = [];
+
+    for (let i = 1; i <= pagesCount; i++) {
+        usersPagesCount.push(i)
+    }
+
     return (
         <div>
+            {usersPagesCount.map((page) => {
+                return (
+                    <span className={usersState.currentPage === page
+                        ? styles.selectedPage : ""}>{page}</span>
+                )
+            })}
             {usersState.users.map((user) => <div key={user.id}>
                 <span>
                     <div>
-                        <img src={user.avatar}
-                             alt="Avatar"
-                             className={styles.avatar}
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lTn4YOuayj63G5yuQ2DohGT4BN_AnZ2sTQ&usqp=CAU"
+                            alt="Avatar"
+                            className={styles.avatar}
                         />
                     </div>
                     <div>
