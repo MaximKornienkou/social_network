@@ -13,7 +13,8 @@ export type ProfilePageType = {
 
 export type ActionTypesProfileReducer =
     ReturnType<typeof addPostActionCreator> |
-    ReturnType<typeof newPostActionCreator>;
+    ReturnType<typeof newPostActionCreator> |
+    ReturnType<typeof setUserProfileAC>;
 
 const initialState: ProfilePageType = {
     posts: [{id: v1(), message: "Hi, how are you?", likesCount: 12},
@@ -33,6 +34,8 @@ export const profileReducer = (state = initialState,
             };
         case "NEW-POST-TEXT":
             return {...state, newPostText: action.value};
+        case "SET-USER-PROFILE":
+            return {...state};
         default:
             return state;
     }
@@ -40,12 +43,18 @@ export const profileReducer = (state = initialState,
 
 export const addPostActionCreator = () => {
     return {
-        type: "ADD-POST"
+        type: "ADD-POST",
     } as const
 }
 export const newPostActionCreator = (value: string) => {
     return {
         type: "NEW-POST-TEXT",
-        value
+        value,
+    } as const
+}
+export const setUserProfileAC = (userProfile: any) => {
+    return {
+        type: "SET-USER-PROFILE",
+        userProfile,
     } as const
 }

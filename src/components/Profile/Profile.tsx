@@ -1,7 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {ProfilePageType} from "../../Redux/profile-reducer";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import { setUserProfileAC } from "../../Redux/profile-reducer";
 
 type ProfilePropsType = {
     title: string;
@@ -9,6 +12,17 @@ type ProfilePropsType = {
 }
 
 function Profile(props: ProfilePropsType) {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users/20390`)
+            .then((response: any) => {
+                    dispatch(setUserProfileAC(response.data));
+                }
+            )
+    }, [])
+
 
     return (
         <div>
