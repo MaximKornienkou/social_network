@@ -61,17 +61,21 @@ export function Users() {
                     return (
                         <span className={usersState.currentPage === page
                             ? styles.selectedPage : ""}
-                              onClick={() => onClickSetCurrentPage(page)}>{page}</span>
+                              onClick={() => onClickSetCurrentPage(page)}
+                              key={page}
+                        >{page}
+                        </span>
                     )
                 })}
-                {usersState.users.map((user) => <div key={user.id}>
+                {usersState.users.map((user) =>
+                        <div key={user.id}>
                 <span>
                     <div>
                         <NavLink to={`/profile/${user.id}`}>
                             <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lTn4YOuayj63G5yuQ2DohGT4BN_AnZ2sTQ&usqp=CAU"
-                            alt="Avatar"
-                            className={styles.avatar}
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lTn4YOuayj63G5yuQ2DohGT4BN_AnZ2sTQ&usqp=CAU"
+                                alt="Avatar"
+                                className={styles.avatar}
                             />
                         </NavLink>
                     </div>
@@ -81,8 +85,7 @@ export function Users() {
                             : <button onClick={() => onClickFollow(user.id)}>Follow</button>}
                     </div>
                 </span>
-                    <span>
-                    <span>
+                            <span>
                         <div>
                             {user.name}
                         </div>
@@ -90,7 +93,7 @@ export function Users() {
                             {user.status}
                         </div>
                     </span>
-                    <span>
+                            <span>
                         <div>
                             {"user.location.country"}
                         </div>
@@ -98,8 +101,8 @@ export function Users() {
                             {"user.location.city"}
                         </div>
                     </span>
-                </span>
-                </div>)}
+                        </div>
+                )}
             </div>
         </>
     )

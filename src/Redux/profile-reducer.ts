@@ -9,6 +9,7 @@ export type PostsType = {
 export type ProfilePageType = {
     posts: Array<PostsType>;
     newPostText: string;
+    profile: any;
 }
 
 export type ActionTypesProfileReducer =
@@ -20,7 +21,8 @@ const initialState: ProfilePageType = {
     posts: [{id: v1(), message: "Hi, how are you?", likesCount: 12},
         {id: v1(), message: "My first post", likesCount: 9},
     ],
-    newPostText: ""
+    newPostText: "",
+    profile: null,
 }
 
 export const profileReducer = (state = initialState,
@@ -35,7 +37,7 @@ export const profileReducer = (state = initialState,
         case "NEW-POST-TEXT":
             return {...state, newPostText: action.value};
         case "SET-USER-PROFILE":
-            return {...state};
+            return {...state, profile: action.userProfile};
         default:
             return state;
     }

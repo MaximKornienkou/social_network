@@ -19,6 +19,7 @@ export type UserDataType = {
 export type ProfilePageType = {
     posts: Array<PostsType>;
     newPostText: string;
+    profile: {};
 }
 export type DialogsPageType = {
     userData: Array<UserDataType>;
@@ -47,7 +48,8 @@ const store: StoreType = {
             posts: [{id: v1(), message: "Hi, how are you?", likesCount: 12},
                 {id: v1(), message: "My first post", likesCount: 9},
             ],
-            newPostText: ""
+            newPostText: "",
+            profile: "",
         },
         dialogsPage: {
             userData: [
