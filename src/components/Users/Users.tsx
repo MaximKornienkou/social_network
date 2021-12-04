@@ -1,48 +1,42 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../Redux/redux-store";
 import {
-    dataIsFetchingAC,
-    followAC,
+    dataIsFetchingAC, disableFollowUnfollowButtonAC,
+    followUserTC, getUsersTC,
     setCurrentPageAC,
-    setUsersAC,
-    unFollowAC,
+    unfollowUserTC,
     UsersType
 } from "../../Redux/users-reducer";
 import styles from "./Users.module.css"
-import axios from "axios";
 import {Preloader} from "../Preloader/Preloader";
 import {NavLink} from "react-router-dom";
+
 
 export function Users() {
 
     const usersState = useSelector<AppRootStateType, UsersType>((state) => state.usersPage);
     const dispatch = useDispatch();
 
-    if (usersState.users.length === 0) {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${usersState.currentPage}&count=${usersState.pageSize}`)
-            .then((response: any) => {
-                    dispatch(dataIsFetchingAC(false));
-                    dispatch(setUsersAC(response.data.items));
-                }
-            )
-    }
+    useEffect(() => {
+        if (usersState.users.length === 0) {
+            dispatch(getUsersTC(usersState.currentPage, usersState.pageSize))
+        }
+    }, [usersState.users.length, dispatch, usersState.currentPage, usersState.pageSize])
 
-    const onClickUnfollow = (userId: string) => {
-        dispatch(unFollowAC(userId));
-    }
-    const onClickFollow = (userId: string) => {
-        dispatch(followAC(userId));
-    }
     const onClickSetCurrentPage = (page: number) => {
         dispatch(dataIsFetchingAC(true));
         dispatch(setCurrentPageAC(page));
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${usersState.pageSize}`)
-            .then((response: any) => {
-                    dispatch(dataIsFetchingAC(false));
-                    dispatch(setUsersAC(response.data.items));
-                }
-            )
+        dispatch(getUsersTC(page, usersState.pageSize))
+    }
+
+    const onClickUnfollow = (userId: number) => {
+        dispatch(disableFollowUnfollowButtonAC(userId));
+        dispatch(unfollowUserTC(userId));
+    }
+    const onClickFollow = (userId: number) => {
+        dispatch(disableFollowUnfollowButtonAC(userId));
+        dispatch(followUserTC(userId));
     }
 
     const pagesCount = Math.ceil(usersState.totalUsersCount / usersState.pageSize);
@@ -73,34 +67,28 @@ export function Users() {
                     <div>
                         <NavLink to={`/profile/${user.id}`}>
                             <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lTn4YOuayj63G5yuQ2DohGT4BN_AnZ2sTQ&usqp=CAU"
+                                src={user.photos.small
+                                    ? user.photos.small
+                                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lTn4YOuayj63G5yuQ2DohGT4BN_AnZ2sTQ&usqp=CAU"}
                                 alt="Avatar"
                                 className={styles.avatar}
                             />
                         </NavLink>
                     </div>
                     <div>
-                        {user.follow
-                            ? <button onClick={() => onClickUnfollow(user.id)}>Unfollow</button>
-                            : <button onClick={() => onClickFollow(user.id)}>Follow</button>}
+                        {user.followed
+                            ? <button disabled={usersState.disableFollowUnfollowButton.some(id => id === user.id)}
+                                      onClick={() => onClickUnfollow(user.id)}>Unfollow</button>
+                            : <button disabled={usersState.disableFollowUnfollowButton.some(id => id === user.id)}
+                                      onClick={() => onClickFollow(user.id)}>Follow</button>}
                     </div>
                 </span>
-                            <span>
-                        <div>
-                            {user.name}
-                        </div>
-                        <div>
-                            {user.status}
-                        </div>
-                    </span>
-                            <span>
-                        <div>
-                            {"user.location.country"}
-                        </div>
-                        <div>
-                            {"user.location.city"}
-                        </div>
-                    </span>
+                            <div>
+                                {user.name}
+                            </div>
+                            <div>
+                                {user.status}
+                            </div>
                         </div>
                 )}
             </div>

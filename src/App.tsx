@@ -27,11 +27,12 @@ function App() {
             <div className="app-wrapper-content">
                 <Route path="/dialogs" render={() => <Dialogs state={dialogsState} id={v1()}
                                                               messageText={dialogsState.newMessageText}
-                                                              />} />
-                <Route path="/profile/" render={() => <Profile title={"title"}
-                                                              state={profileState}
-                                                              />} />
-                <Route path="/users" render={() => <Users />}/>
+                />}/>
+                <Route path="/profile/:userId?" render={(user) => <Profile title={"title"}
+                                                                            state={profileState}
+                                                                            user={user}
+                />}/>
+                <Route path="/users" render={() => <Users/>}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>
