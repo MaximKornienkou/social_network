@@ -14,6 +14,7 @@ import {useSelector} from "react-redux";
 import {DialogsPageType} from "./Redux/dialogs-reducer";
 import {ProfilePageType} from "./Redux/profile-reducer";
 import {Users} from "./components/Users/Users";
+import {Login} from "./components/Login/Login";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>
+                <Route path="/login" component={Login}/>
             </div>
         </div>
     );

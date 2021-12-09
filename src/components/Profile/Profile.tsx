@@ -1,10 +1,8 @@
 import React, {useEffect} from "react";
 import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {ProfilePageType} from "../../Redux/profile-reducer";
-import axios from "axios";
+import {getProfileInfoTC, ProfilePageType} from "../../Redux/profile-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {setUserProfileAC} from "../../Redux/profile-reducer";
 import {AppRootStateType} from "../../Redux/redux-store";
 
 type ProfilePropsType = {
@@ -23,22 +21,12 @@ function Profile(props: ProfilePropsType) {
         userId = 20390;
     }
     useEffect(() => {
-        //if (userProfile.profile) {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`, {
-            withCredentials: true,
-            headers: {
-                "API-KEY": "59351494-37f1-4114-8206-923aa7d46da6",
-            }
-        })
-            .then((response: any) => {
-                    dispatch(setUserProfileAC(response.data));
-                }
-            )
-        //}
-    }, []);
-
+        dispatch(getProfileInfoTC(userId))
+    }, [userId, dispatch]);
 
     const fullName = userProfile.profile ? userProfile.profile.fullName : "";
+
+
 
     return (
         <div>

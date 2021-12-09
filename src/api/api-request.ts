@@ -1,6 +1,7 @@
 import axios from "axios";
 import {UserType} from "../Redux/users-reducer";
 import {UserDataType} from "../Redux/auth-reducer";
+import {ProfileInfoType} from "../Redux/profile-reducer";
 
 const instance = axios.create({
     baseURL: `https://social-network.samuraijs.com/api/1.0`,
@@ -54,4 +55,16 @@ export type GetAuthMeResponseType = {
     resultCode: number,
     messages: [],
     data: UserDataType,
+}
+
+export const profileAPI = {
+    getProfileInfo(userId: number) {
+        return instance.get<ProfileInfoType>(`/profile/${userId}`)
+            .then((response: any) => {
+                   return response;
+
+                }
+
+            )
+    }
 }
